@@ -45,7 +45,7 @@ Response: JSON with click count and recent click details
 4. Create `.env` file with database credentials
 5. Run: `python app.py`
 
-## Database schema
+## Database Schema
 ```sql
 CREATE TABLE urls (
     id SERIAL PRIMARY KEY,
