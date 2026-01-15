@@ -2,6 +2,10 @@
 
 A Flask-based URL shortening service with click tracking and analytics.
 
+
+## Live Demo
+https://url-shortener-wurd.onrender.com
+
 ## Features 
 
 - Deterministic URL shortening using SHA-256 hashing
@@ -17,6 +21,26 @@ A Flask-based URL shortening service with click tracking and analytics.
 - psycopg2
 - Deployed on Render
 
+## Example Usage
+Shorten a URL:
+```bash
+curl -X POST -H "Content-Type: application/json" \
+ -d '{"url":"https://example.com"}' \
+ https://url-shortener-wurd.onrender.com/shorten
+```
+
+Redirect:
+```bash
+curl -I https://url-shortener-wurd.onrender.com/abc123
+```
+
+View statistics:
+```bash
+curl https://url-shortener-wurd.onrender.com/stats/abc123
+
+```
+## API Endpoints
+
 ### Shorten URL 
 ```
 POST /shorten
@@ -28,7 +52,7 @@ Response: {"short_code": "abc123"}
 
 ### Redirect
 ```
-Get /{short_code}
+GET /{short_code}
 Response: 302 redirect to original URL
 ```
 
@@ -39,6 +63,7 @@ Response: JSON with click count and recent click details
 ```
 
 ### Local Setup
+
 1. Clone repository
 2. Install dependencies: `pip install -r requirements.txt`
 3. Create PostgreSQL database and tables (see schema below)
@@ -49,7 +74,7 @@ Response: JSON with click count and recent click details
 ```sql
 CREATE TABLE urls (
     id SERIAL PRIMARY KEY,
-    originl_url TEXT NOT NULL,
+    original_url TEXT NOT NULL,
     short_code VARCHAR(10) UNIQUE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -64,5 +89,7 @@ CREATE TABLE clicks (
 );
 ```
 
-## Live Demo
-https://url-shortener-wurd.onrender.com
+## Notes 
+- Free tier may experience cold starts (~30s initial load)
+- Deterministic hashing means same URL always gets same short code
+
